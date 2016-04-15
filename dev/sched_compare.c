@@ -4,9 +4,15 @@
 #include "procs.h"
 #include "procheap.h"
 
+// ex. call ./test [numprocs] [seed]
+
 // DO NOT CHANGE THESE TWO CONSTANTS !
 #define INTER_ARRIVAL_TIME 3   // mean poisson dist
 #define SERVICE_TIME       5   // mean poisson dist
+
+//  Globals
+int clock;                 // counter for time simulation
+int sum_turnaround_time;   // sum of turnaround times used for average
 
 int main(int argc, char** argv)
 {
@@ -23,7 +29,7 @@ int main(int argc, char** argv)
 
   // create an array of numprocs randomly generate (arrival time, service time)
   procs = procs_random_create(numprocs, seed, INTER_ARRIVAL_TIME, SERVICE_TIME);
-  
+
   // Uncomment the next block of code and comment the line above if
   // you want to read the input from a file instead of generating
   // random values. This can be useful for debugging your code with
