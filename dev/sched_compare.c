@@ -36,12 +36,12 @@ int main(int argc, char** argv)
   // known inputs.  The file, "book_example.txt", contains an example
   // from the book.
 
-  /*
+
   if ((procs = procs_read("book_example.txt", &numprocs)) == NULL) {
     fprintf(stderr, "Error reading procs array\n");
     return 2;
   }
-  */
+
 
   printf("procs array:\n");
   printf("(arrival time, service time)\n");
