@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "helpers.c"
+#include "procs.c"
+
 
 int hppn(proc_t *procs, int numprocs)
 {

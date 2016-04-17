@@ -2,6 +2,7 @@
 #define HPPN_H
 
 #include "helpers.h"
+#include "procs.h"
 
 /* prototype definition for node */
 typedef struct node {

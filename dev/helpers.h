@@ -1,6 +1,8 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
+#include "procs.h"
+
 typedef struct node {
   double arrival_time;
   double service_time;
