@@ -54,6 +54,8 @@ int main(int argc, char** argv)
      manageable.
   */
 
+  hppn(procs, &numprocs);
+
   free(procs);   // procs array was dynamically allocated, so free up
 
   return 0;
