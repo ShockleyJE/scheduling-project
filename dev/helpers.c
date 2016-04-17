@@ -3,24 +3,11 @@
  * =========================================================================
  */
 
- void resetGlobals(){
-   clock= 0;
-   sum_turnaround_time = 0;
- }
 
  /* =========================================================================
   *     Linked List
   * =========================================================================
   */
-
- typedef struct node {
-   double arrival_time;
-   double service_time;
-   double wait_time;
-   double end_time;
-   struct node * next;
-   int id;
- } node;
 
  /**
   * the following routine traverses and prints the contents of the list,
@@ -95,38 +82,9 @@
   /**
    * the following routine traverses and deletes node toRemove
    * simulates process completion
-   * NOTE: the first is a recursive implementation, I'm going to try not to use it
    */
 
-  //  node *RemoveNode(Node *currP, int toRemoveID)
-  // {
-  //   /* See if we are at end of list. */
-  //   if (currP == NULL)
-  //     return NULL;
-  //
-  //   /*
-  //    * Check to see if current node is one
-  //    * to be deleted.
-  //    */
-  //   if (currP->id == toRemoveID) {
-  //     Node *tempNextP;
-  //
-  //     /* Save the next pointer in the node. */
-  //     tempNextP = currP->next;
-  //
-  //     /* Deallocate the node. */
-  //     free(currP);
-  //
-  //     /*
-  //      * Return the NEW pointer to where we
-  //      * were called from.  I.e., the pointer
-  //      * the previous call will use to "skip
-  //      * over" the removed node.
-  //      */
-  //     return tempNextP;
-  //   }
-
-    void RemoveNode(node * thisNode, node ** head) {
+    void removeNode(node * thisNode, node ** head) {
       if (strcmp(thisNode->state, ((*head)->state) == 0) {
           node * temp = *head;
           *head = (*head)->next;
@@ -137,7 +95,7 @@
       node * current = (*head)->next;
       node * previous = *head;
       while (current != NULL && previous != NULL) {
-          if (strcmp(thisNode->id, current->id) == 0) {
+          if (thisNode->id == current->id) {
               node * temp = current;
               previous->next = current->next;
               free(temp);
@@ -156,11 +114,11 @@
 /**
  * Compare arrival time of two processes
  */
-int compareArrivalTime(const void *a, const void *b){
-	proc_t *first = (proc_t *) a;
-	proc_t *second = (proc_t *) b;
-	return first->arrivalTime - second->arrivalTime;
-}
+// int compareArrivalTime(const void *a, const void *b){
+// 	proc_t *first = (proc_t *) a;
+// 	proc_t *second = (proc_t *) b;
+// 	return first->arrivalTime - second->arrivalTime;
+// }
 /**
  * Calculates average turnaround time
  */
@@ -182,55 +140,55 @@ double averageWaitTime(int theWait, int numberOfProcesses){
 /**
  * Initializes a process queue. Makes an empty queue
  */
-void initializeProcessQueue(Process_queue *q){
-	q = (Process_queue*)malloc(sizeof(Process_queue));
-	q->front = q->back = NULL;
-	q->size = 0;
-}
+// void initializeProcessQueue(Process_queue *q){
+// 	q = (Process_queue*)malloc(sizeof(Process_queue));
+// 	q->front = q->back = NULL;
+// 	q->size = 0;
+// }
 /**
  * Creates a single process node with pointer to data and next
  */
-  Process_node *createProcessNode(proc_t *p){
-	Process_node *node = (Process_node*)malloc(sizeof(Process_node));
-	if (node == NULL){
-		error("out of memory");
-	}
-	node->data = p;
-	node->next = NULL;
-	return node;
-}
+//   Process_node *createProcessNode(proc_t *p){
+// 	Process_node *node = (Process_node*)malloc(sizeof(Process_node));
+// 	if (node == NULL){
+// 		error("out of memory");
+// 	}
+// 	node->data = p;
+// 	node->next = NULL;
+// 	return node;
+// }
 /**
  * Equeues a process
  */
-void enqueueProcess(Process_queue *q, proc_t *p){
-	Process_node *node = createProcessNode(p);
-	if (q->front == NULL){
-		assert(q->back == NULL);
-		q->front = q->back = node;
-	}
-	else{
-		assert(q->back != NULL);
-		q->back->next = node;
-		q->back = node;
-	}
-	q->size++;
-}
+// void enqueueProcess(Process_queue *q, proc_t *p){
+// 	Process_node *node = createProcessNode(p);
+// 	if (q->front == NULL){
+// 		assert(q->back == NULL);
+// 		q->front = q->back = node;
+// 	}
+// 	else{
+// 		assert(q->back != NULL);
+// 		q->back->next = node;
+// 		q->back = node;
+// 	}
+// 	q->size++;
+// }
 /**
  * Dequeues a process
  */
-void dequeueProcess(Process_queue *q) {
-    Process_node *deleted = q->front;
-    assert(q->size > 0);
-    if (q->size == 1) {
-        q->front = NULL;
-        q->back = NULL;
-    } else {
-        assert(q->front->next != NULL);
-        q->front = q->front->next;
-    }
-    free(deleted);
-    q->size--;
-}
+// void dequeueProcess(Process_queue *q) {
+//     Process_node *deleted = q->front;
+//     assert(q->size > 0);
+//     if (q->size == 1) {
+//         q->front = NULL;
+//         q->back = NULL;
+//     } else {
+//         assert(q->front->next != NULL);
+//         q->front = q->front->next;
+//     }
+//     free(deleted);
+//     q->size--;
+// }
 
 /* =========================================================================
  *      Comparing processes
@@ -239,19 +197,19 @@ void dequeueProcess(Process_queue *q) {
  /**
  * Compare arrival time of two processes
  */
-int compareArrivalTime(const void *a, const void *b) {
-	proc_t *first = (proc_t *) a;
-	proc_t *second = (proc_t *) b;
-	return first->arrival_time - second->arrival_time;
-}
+// int compareArrivalTime(const void *a, const void *b) {
+// 	proc_t *first = (proc_t *) a;
+// 	proc_t *second = (proc_t *) b;
+// 	return first->arrival_time - second->arrival_time;
+// }
 /**
 * Compare service time of two processes
 */
-int compareServiceTime(const void *a, const void *b) {
- proc_t *first = (proc_t *) a;
- proc_t *second = (proc_t *) b;
- return first->service_time - second->service_time;
-}
+// int compareServiceTime(const void *a, const void *b) {
+//  proc_t *first = (proc_t *) a;
+//  proc_t *second = (proc_t *) b;
+//  return first->service_time - second->service_time;
+// }
 /* =========================================================================
  *     HPPN
  * =========================================================================
