@@ -37,10 +37,10 @@ int main(int argc, char** argv)
   // from the book.
 
 
-  if ((procs = procs_read("book_example.txt", &numprocs)) == NULL) {
-    fprintf(stderr, "Error reading procs array\n");
-    return 2;
-  }
+  // if ((procs = procs_read("book_example.txt", &numprocs)) == NULL) {
+  //   fprintf(stderr, "Error reading procs array\n");
+  //   return 2;
+  // }
 
 
   printf("procs array:\n");

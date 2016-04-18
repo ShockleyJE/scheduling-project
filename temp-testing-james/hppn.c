@@ -13,8 +13,7 @@
 int hppn(proc_t * procs,int numprocs)
 {
   int i,time,sum_wait=0,sum_turnaround=0;
-  int largest,arrival_time[numprocs],burst_time[numprocs],wait_time[numprocs],remain;
-  double priority[numprocs];
+  int largest,arrival_time[10],burst_time[10],priority[10],wait_time[10],remain;
 
   remain=numprocs;
 
@@ -27,15 +26,7 @@ int hppn(proc_t * procs,int numprocs)
     priority[i]= 0;
   }
 
-  if(DEBUG){
-    printf("intialized arrays\n");
-    printf("\n\nProcess\t|arrival_time|service_time|wait_time\n");
-    for(i=0;i<numprocs;i++){
-      if(DEBUG){printf("P[%d]\t|\t%d\t|\t%d|\t%d\n",i,arrival_time[i],burst_time[i],wait_time[i]);}
-    }
-  }
-
-  if(DEBUG){printf("\n\nProcess\t|Turnaround time|waiting time|priority\n");}
+  if(DEBUG){printf("\n\nProcess\t|Turnaround time|waiting time\n");}
 
   // begin sim
   for(time=0;remain!=0;)
@@ -46,9 +37,8 @@ int hppn(proc_t * procs,int numprocs)
     {
       if(arrival_time[i]<=time && burst_time[i]>0)
       {
-        priority[i]= (double)(((double) time-arrival_time[i]+ (double) burst_time[i])/ (double) burst_time[i]);
+        priority[i]= ((wait_time[i]+burst_time[i])/burst_time[i]);
       }
-      // printf("P[%d], priority: %f\n",i,priority[i] );
     }
     //determine which process is up next
     for(i=0;i<numprocs;i++)
@@ -58,16 +48,11 @@ int hppn(proc_t * procs,int numprocs)
         largest=i;
       }
     }
-    // if(DEBUG){printf("--- Current = P[%d] --- time = %d ---\n", largest, time);}
-    // if(DEBUG){printf("process: P[%d] current time:|%d\n",largest,time);}
     // increment sim wait time
     time+=burst_time[largest];
     //decrement how many remain
     remain--;
-    if(DEBUG){printf("P[%d]\t|\t%d\t|\t%d\t|\t%f\n",largest+1,time-arrival_time[largest],time-arrival_time[largest]-burst_time[largest], priority[largest]);}
-    // running totals
-    sum_wait+=time-arrival_time[largest]-burst_time[largest];
-    sum_turnaround+=time-arrival_time[largest];
+    if(DEBUG){printf("P[%d]\t|\t%d\t|\t%d\n",largest+1,time-arrival_time[largest],time-arrival_time[largest]-burst_time[largest]);}
 
     //increment wait times
     for(i=0;i<numprocs;i++)
@@ -77,6 +62,10 @@ int hppn(proc_t * procs,int numprocs)
         wait_time[i] += burst_time[largest];
       }
     }
+
+    // running totals
+    sum_wait+=time-arrival_time[largest]-burst_time[largest];
+    sum_turnaround+=time-arrival_time[largest];
 
     burst_time[largest]=0;
   }

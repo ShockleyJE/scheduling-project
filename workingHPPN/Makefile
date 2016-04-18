@@ -23,5 +23,6 @@ hppn.o: hppn.c procs.h
 	$(CC) $(CFLAGS) -c hppn.c
 
 
+
 clean:
 	/bin/rm -f sched_compare $(OBJS)
