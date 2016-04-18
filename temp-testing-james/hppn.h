@@ -5,14 +5,12 @@
 #include "procs.h"
 
 /* prototype definition for node */
-typedef struct node {
+typedef struct nodes {
   double arrival_time;
   double service_time;
   double wait_time;
   double end_time;
-  struct node * next;
+  int id;
 } node;
-
-int hppn(proc_t *, int );
 
 #endif /* HPPN_H */

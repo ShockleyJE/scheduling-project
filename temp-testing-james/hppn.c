@@ -2,56 +2,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "helpers.c"
 #include "procs.c"
+#include "hppn.h"
 
+#define DEBUG = 1;
 
-int hppn(proc_t *procs, int numprocs)
+int main(proc_t * procs, numprocs)
 {
+  int time,burst_time[10],arrival_time[10],sum_burst_time=0,smallest,numprocs,i;
+  int sum_turnaround=0,sum_wait=0;
 
-  struct node * front = NULL; /* will be the pointer to my linked list */
-  struct node * last = NULL; /* for upkeep */
-  struct node * curr = NULL /* currntly running process */
+  //set arrival times and burst (service) times
+  for(i=0;i<numprocs;i++)
+  {
+    burst_time[i]= procs[i].service_time;
+    // burst_time[i]= procs[i]->service_time;
 
-  int clock= 0;
-  int sum_turnaround_time = 0;
-  int sum_wait_time = 0;
+    arrival_time[i]= procs[i].arrival_time;
+    // arrival_time[i]= procs[i]->arrival_time;
 
-  int list_size= numprocs;
-  int i= 0;
-
-  // Initializes process list
-  for(i = 0; i < list_size -1; i++){
-    front= createProcessNode(procs[i], * front, i);
-    if(i== 0){
-      last= front;
-    }
+    sum_burst_time+=burst_time[i];
   }
+  burst_time[9]=9999;
 
-  while(list_size > 0){
-    // get next node with highest response ratio
-    curr= getNextProcess(first);
-    // update simclock for current process, simulating one timeslice each rep
-    for(int i= 0; i< curr->service_time; i++){
-        clock++;
+  if(DEBUG==1){printf("\n\nProcess\t|Turnaround Time| Waiting Time\n\n");}
+
+  for(time=0; time < sum_burst_time;)
+  {
+    smallest=9;
+    // find which has lowest response ratio
+    for(i=0;i<numprocs;i++)
+    {
+      if(arrival_time[i]<=time && burst_time[i]>0 && burst_time[i]<burst_time[smallest])
+        smallest=i;
     }
-    //update running sums
-    sum_turnaround_time += (curr->wait_time + curr->service_time);
-    total_wait_time += curr->wait_time;
-    // upkeep
-    removeNode(curr, front);
-    updateWaitTimes(front);
-    list_size--;
+    if(smallest==9)
+    {
+      time++;
+      continue;
+    }
+    if(DEBUG==1){printf("P[%d]\t|\t%d\t|\t%d\n",smallest+1,time+burst_time[smallest]-arrival_time[smallest],time-arrival_time[smallest]);}
+    sum_turnaround+=time+burst_time[smallest]-arrival_time[smallest];
+    sum_wait+=time-arrival_time[smallest];
+    time+=burst_time[smallest];
+    burst_time[smallest]=0;
   }
-  //calculate average times
-  int avg_wait_time = averageWaitTime(total_waiting_time, numprocs);
-  int avg_turnaround_time = averageTurnaroundTime(sum_turnaround_time, numprocs);
-
-  // TODO: format
-  printf("HRRN\n");
-  printf("average turnaround time: %d\n", avg_turnaround_time );
-  printf("average wait time: %d\n", avg_wait_time );
-
-
+  printf("\n\numprocs average waiting time = %f",sum_wait*1.0/numprocs);
+  printf("\n\numprocs average turnaround time = %f",sum_turnaround*1.0/numprocs);
   return 0;
 }
