@@ -10,10 +10,6 @@
 #define INTER_ARRIVAL_TIME 3   // mean poisson dist
 #define SERVICE_TIME       5   // mean poisson dist
 
-//  Globals
-int clock;                 // counter for time simulation
-int sum_turnaround_time;   // sum of turnaround times used for average
-
 int main(int argc, char** argv)
 {
   int numprocs, seed;

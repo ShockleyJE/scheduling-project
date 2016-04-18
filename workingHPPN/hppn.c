@@ -5,7 +5,7 @@
 // #include "procs.c"
 #include "procs.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 // NOTES
 // high response ratio represent high priority
@@ -27,15 +27,15 @@ int hppn(proc_t * procs,int numprocs)
     priority[i]= 0;
   }
 
-  if(DEBUG){
-    printf("intialized arrays\n");
-    printf("\n\nProcess\t|arrival_time|service_time|wait_time\n");
-    for(i=0;i<numprocs;i++){
-      if(DEBUG){printf("P[%d]\t|\t%d\t|\t%d|\t%d\n",i,arrival_time[i],burst_time[i],wait_time[i]);}
-    }
-  }
+  // if(DEBUG){
+  //   printf("intialized arrays\n");
+  //   printf("\n\nProcess\t|arrival_time|service_time|wait_time|turnaround_time\n");
+  //   for(i=0;i<numprocs;i++){
+  //     if(DEBUG){printf("P[%d]\t|\t%d\t|\t%d|\t%d\n",i,arrival_time[i],burst_time[i],wait_time[i]);}
+  //   }
+  // }
 
-  if(DEBUG){printf("\n\nProcess\t|Turnaround time|waiting time|priority\n");}
+  if(DEBUG){printf("\n\nProcess\t|Turnaround time|waiting time|\n");}
 
   // begin sim
   for(time=0;remain!=0;)
@@ -58,13 +58,13 @@ int hppn(proc_t * procs,int numprocs)
         largest=i;
       }
     }
-    // if(DEBUG){printf("--- Current = P[%d] --- time = %d ---\n", largest, time);}
-    // if(DEBUG){printf("process: P[%d] current time:|%d\n",largest,time);}
-    // increment sim wait time
+    if(DEBUG){printf("--- Current = P[%d] --- time = %d ---\n", largest, time);}
+    if(DEBUG){printf("process: P[%d] current time:|%d\n",largest,time);}
+    //increment sim wait time
     time+=burst_time[largest];
     //decrement how many remain
     remain--;
-    if(DEBUG){printf("P[%d]\t|\t%d\t|\t%d\t|\t%f\n",largest+1,time-arrival_time[largest],time-arrival_time[largest]-burst_time[largest], priority[largest]);}
+    if(DEBUG){printf("P[%d]\t|\t%d\t|\t%d\t|\t%d\n",largest+1,time-arrival_time[largest],time-arrival_time[largest]-burst_time[largest], time);}
     // running totals
     sum_wait+=time-arrival_time[largest]-burst_time[largest];
     sum_turnaround+=time-arrival_time[largest];
