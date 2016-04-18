@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "procs.c"
+// #include "procs.c"
 #include "procs.h"
 
 #define DEBUG 1
@@ -68,7 +68,8 @@ int hppn(proc_t * procs,int numprocs)
 
     burst_time[largest]=0;
   }
-  printf("\nAvg waiting time = %f\n",sum_wait*1.0/numprocs);
-  printf("Avg turnaround time = %f",sum_turnaround*1.0/numprocs);
+  printf("\n/*** HPPN ***/\n");
+  printf("Avg waiting time = %f\n",sum_wait*1.0/numprocs);
+  printf("Avg turnaround time = %f\n\n",sum_turnaround*1.0/numprocs);
   return 0;
 }
