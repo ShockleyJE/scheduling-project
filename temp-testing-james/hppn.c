@@ -3,26 +3,26 @@
 #include <stdlib.h>
 
 #include "procs.c"
-#include "hppn.h"
+#include "procs.h"
 
-#define DEBUG = 1;
+#define DEBUG 1
 
 // NOTES
 // high response ratio represent high priority
 
-int main(proc_t * procs, numprocs)
+int hppn(proc_t * procs,int numprocs)
 {
-  int i,j,time,sum_wait=0,sum_turnaround=0;
-  int largest,arrival_time[10],burst_time[10],priority[10],remain;
+  int i,time,sum_wait=0,sum_turnaround=0;
+  int largest,arrival_time[10],burst_time[10],priority[10],wait_time[10],remain;
 
   remain=numprocs;
 
   // initialize
   for(i=0;i<numprocs;i++)
   {
-    arrival_time[i] = procs[i]->arrival_time;
-    burst_time[i] = procs[i]->service_time;
-    wait_time[i] = procs[i]->wait_time;
+    arrival_time[i] = procs[i].arrival_time;
+    burst_time[i] = procs[i].service_time;
+    wait_time[i] = procs[i].wait_time;
     priority[i]= 0;
   }
 
@@ -37,7 +37,7 @@ int main(proc_t * procs, numprocs)
     {
       if(arrival_time[i]<=time && burst_time[i]>0)
       {
-        priority[i]= ((wait_time[i]+service_time[i])/service_time[i]);
+        priority[i]= ((wait_time[i]+burst_time[i])/burst_time[i]);
       }
     }
     //determine which process is up next
