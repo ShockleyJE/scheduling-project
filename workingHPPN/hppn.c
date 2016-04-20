@@ -4,8 +4,6 @@
 #include "hppn.h"
 #include "procs.h"
 
-#define DEBUG 0
-
  /*
   * sort array of process structs by arrival_time
   * requires
@@ -40,12 +38,19 @@ void hppn(proc_t * procs, int numprocs)
    p[i].completed = 0;
    sum_burst_time+=p[i].burst_time;
  }
-
+ // TODO: remove relic from standalone main
+ // for(i=0,c='1';i<numprocs;i++,c++){
+ //   p[i].name=c;
+ //   printf("\nEnter the arrival time and burst time of process%c: ",p[i].name);
+ //   scanf("%d%d",&p[i].arrival_time,&p[i].burst_time);
+ //   p[i].completed=0;
+ //   sum_burst_time+=p[i].burst_time;
+ // }
  sortByArrival(p, numprocs);
 
- if(DEBUG){printf("\nName\tArrival Time\tBurst Time\tWaiting Time\tTurnAround Time");}
+ //printf("\nName\tArrival Time\tBurst Time\tWaiting Time\tTurnAround Time");
   for(time=p[0].arrival_time;time<sum_burst_time;){
-    //initialize hrr to something we should never get
+    //initialize hrr to something poisson should never spit out
     float hrr=-9999;
     //initialize location var
     int loc;
@@ -54,6 +59,8 @@ void hppn(proc_t * procs, int numprocs)
     for(i=0;i<numprocs;i++){
      if(p[i].arrival_time<=time && p[i].completed!=1){
       float temp=(float)(p[i].burst_time + (time-p[i].arrival_time))/(float) p[i].burst_time;
+      // uncomment for debugging process response ratio
+      // printf("p[%d] rr= %f\n",i, temp );
       if(hrr < temp){
         hrr=temp;
         loc=i;
@@ -67,13 +74,14 @@ void hppn(proc_t * procs, int numprocs)
     p[loc].completed=1;
     avg_wait_time+=p[loc].wait_time;
     avg_turnaround_time+=p[loc].turnaround_time;
-    if(DEBUG){printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d\t",p[loc].name,p[loc].arrival_time,p[loc].burst_time,p[loc].wait_time,p[loc].turnaround_time);}
+    //printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d\t",p[loc].name,p[loc].arrival_time,p[loc].burst_time,p[loc].wait_time,p[loc].turnaround_time);
   }
-  printf("\n---------------------------------------------------\n");
-  printf("Highest Priority Process Next\n" );
-  printf("\tAverage waiting time:\t\t%f\n",avg_wait_time/numprocs);
-  printf("\tAverage turnaround time:\t%f\n",avg_turnaround_time*1.0/numprocs);
-  printf("---------------------------------------------------\n");
+  printf("\n-----------------------------------\n");
+  printf("Highest priority process next\n", );
+  printf("\tAverage waiting time: %f\n",avg_wait_time/numprocs);
+  printf("\tAverage turnaround time:  %f\n",avg_turnaround_time*1.0/numprocs);
+  printf("-----------------------------------\n");
+
 
   free(p);
 }
