@@ -8,7 +8,7 @@
   * sort array of process structs by arrival_time
   * requires
   */
-void sortByArrival(hppn_procs_t *p, n){
+void sortByArrival(hppn_procs_t *p,int n){
   hppn_procs_t temp;
   int i,j;
   for(i=0;i<n-1;i++){
@@ -24,14 +24,13 @@ void sortByArrival(hppn_procs_t *p, n){
 
 void hppn(proc_t * procs, int numprocs)
 {
- int i,j,time,sum_burst_time=0,avg_turnaround_time;
- char c;
+ int i,time,sum_burst_time=0,avg_turnaround_time=0,c;
  float avg_wait_time=0;
 
  hppn_procs_t *p;
  p = malloc(numprocs * sizeof(hppn_procs_t));
 
- for(i=0,c='1';i<numprocs;i++,c++){
+ for(i=0,c=1;i<numprocs;i++,c++){
    p[i].arrival_time = procs[i].arrival_time;
    p[i].burst_time = procs[i].service_time;
    p[i].wait_time = procs[i].wait_time;
@@ -56,7 +55,7 @@ void hppn(proc_t * procs, int numprocs)
     //initialize location var
     int loc;
     //for each, find uncompleted processes that have arrived already
-    //them, find the one with the highest response ratio
+    //then, find the one with the highest response ratio
     for(i=0;i<numprocs;i++){
      if(p[i].arrival_time<=time && p[i].completed!=1){
       float temp=(float)(p[i].burst_time + (time-p[i].arrival_time))/(float) p[i].burst_time;
@@ -74,11 +73,11 @@ void hppn(proc_t * procs, int numprocs)
     p[loc].turnaround_time=time-p[loc].arrival_time;
     p[loc].completed=1;
     avg_wait_time+=p[loc].wait_time;
-    avg_turnaround_time+=p.[loc]turnaround_time;
-    printf("\n%c\t\t%d\t\t%d\t\t%d\t\t%d\t",p[loc].name,p[loc].arrival_time,p[loc].burst_time,p[loc].wait_time,p[loc].turnaround_time);
+    avg_turnaround_time+=p[loc].turnaround_time;
+    printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d\t",p[loc].name,p[loc].arrival_time,p[loc].burst_time,p[loc].wait_time,p[loc].turnaround_time);
   }
   printf("\nAverage waiting time:%f\n",avg_wait_time/numprocs);
-  printf("\nAverage turnaround time = %f\n",avg_turnaround_time*1.0/numprocs);
-  
+  printf("Average turnaround time = %f\n",avg_turnaround_time*1.0/numprocs);
+
   free(p);
 }

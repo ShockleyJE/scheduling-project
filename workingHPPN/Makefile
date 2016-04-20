@@ -19,7 +19,7 @@ procheap.o: procheap.c procs.h
 sched_compare.o: sched_compare.c procs.h
 	$(CC) $(CFLAGS) -c sched_compare.c
 
-hppn.o: hppn.c procs.h
+hppn.o: hppn.c procs.h hppn.h
 	$(CC) $(CFLAGS) -c hppn.c
 
 
