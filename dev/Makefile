@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -g     # replace -g with -O2 if speed needed AFTER debugging
-OBJS=poisson.o sched_compare.o procs.o procheap.o hppn.o
+OBJS=poisson.o sched_compare.o procs.o procheap.o
 
 all: sched_compare
 
@@ -18,11 +18,6 @@ procheap.o: procheap.c procs.h
 
 sched_compare.o: sched_compare.c procs.h
 	$(CC) $(CFLAGS) -c sched_compare.c
-
-hppn.o: hppn.c procs.h hppn.h
-	$(CC) $(CFLAGS) -c hppn.c
-
-
 
 clean:
 	/bin/rm -f sched_compare $(OBJS)

@@ -1,28 +1,67 @@
-//for now
-#include helpers-temp.c
+#include <stdio.h>   // for printf()
+#include <stdlib.h>  // for atoi()
 
-int clock;                 // counter for time simulation
-int sum_turnaround_time;   // sum of turnaround times used for average
-
-void fcfs(proc_t *process, int numprocs, )
+int fcfs(int bt[], int n)
 {
+    int wt[20],tat[20],avwt=0,avtat=0,i,j;
+    //int finishTimes[20];
+    //printf("Enter total number of processes(maximum 20):");
+    //scanf("%d",&n);
+ 
+    //printf("\nEnter Process Burst Time\n");
+    //for(i=0;i<n;i++)
+    //{
+     //   printf("P[%d]:",i+1);
+     //   scanf("%d",&bt[i]);
+    //}
+ 
+    wt[0]=0;    //waiting time for first process is 0
+ 
+    //calculating waiting time
+    for(i=1;i<n;i++)
+    {
+        wt[i]=0;
+        for(j=0;j<i;j++)
+            wt[i]+=bt[j];
+    }
+ 
+    printf("\nProcess\t\tService Time\tWaiting Time\tTurnaround Time\tFinish Time");
+ 
+    //calculating turnaround time
+    int finishTime = 0;
+    for(i=0;i<n;i++)
+    {
+		finishTime += bt[i];
+        //tat[i]=bt[i]+wt[i];
+        tat[i] = bt[i] + wt[i];//turnaround time is burst time + waiting time.
+        avwt+=wt[i];
+        avtat+=tat[i];
+        printf("\nP[%d]\t\t%d\t\t%d\t\t%d",i+1,bt[i],wt[i],tat[i]);
+        
+        //if (i==0) finishTimes[0] = bt[0];
+        //else {
+		//	finishTimes[i] = finishTimes[i-1] + bt[i];
+		//	
+		//}
+		
+		printf("\t\t%d",finishTime);
+    }
+	
+	
+ 
+    avwt/=i;
+    avtat/=i;
+    printf("\n\nAverage Waiting Time:%d",avwt);
+    printf("\nAverage Turnaround Time:%d\n",avtat);
+    
+ 
+    return 0;
+}
 
-  /* =========================================================================
-   * Logic
-   * =========================================================================
-   */
-   // while(number_procs){
-   //   -add new incoming procs to to be added to ready queue
-   //   -if a process has finished, move them from the waiting queue
-   //       -set end time to current sim time
-
-  // calculations
-	for(i = 0; i < numberOfProcesses; i++){
-    //TODO: decide where to store/ how to keep up with end_time for each
-		sum_turnaround_time += procs[i].end_time - procs[i].arrival_time;
-		total_waiting_time += procs[i].service_time;
-	}
-  //TODO: change from doubles to ints after sim time and not clock time is written
-	double avg_wait_time = averageWaitTime(total_waiting_time);
-	double avg_turnaround_time = averageTurnaroundTime(sum_turnaround_time);
+int main() {
+	int serviceTimes[6] = {100,50,1,200,20,150}; 
+	fcfs(serviceTimes,6);
+	
+	
+	return 0;
 }
